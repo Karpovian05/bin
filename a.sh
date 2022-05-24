@@ -4,7 +4,7 @@ fw_setenv dropbear_mode
 fw_setenv dropbear_password
 fw_setenv dropbear_key_type
 
-wget https://github.com/Karpovian05/bin/raw/main/a.bin -O /tmp/a.bin > /dev/null 2&>1
+wget https://github.com/Karpovian05/bin/raw/main/a.bin -O /tmp/a.bin
 
 #check file and firmware
 file=$(md5sum /tmp/a.bin | grep /tmp/a.bin | awk '{print $1}')
