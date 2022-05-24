@@ -1,23 +1,30 @@
 #!/bin/sh
-#jffs2reset -y
-#fw_setenv dropbear_mode
-#fw_setenv dropbear_password
-#fw_setenv dropbear_key_type
-#echo "Changing IMEI..."
-#ubus call version set_atcmd_info '{"atcmd":"AT*PROD=2"}' > /dev/null 2&>1
-#ubus call version set_atcmd_info '{"atcmd":"AT*MRD_IMEI=D"}' > /dev/null 2&>1
-#ubus call version set_atcmd_info '{"atcmd":"AT*MRD_IMEI=W,0101,01NOV2012,863583050712265"}' > /dev/null 2&>1
-#ubus call version set_atcmd_info '{"atcmd":"AT*PROD=0"}' > /dev/null 2&>1
+jffs2reset -y
+fw_setenv dropbear_mode
+fw_setenv dropbear_password
+fw_setenv dropbear_key_type
 
-firmware2=$(cat /proc/mtd | grep firmware2 | awk '{print $1}') 
-if [ $firmware2 == 'mtd7:' ] 
-then 
-#wget http://github.com/Karpovian05/bin/raw/main/a.bin -O /tmp/firmware.bin
+wget https://github.com/Karpovian05/bin/raw/main/a.bin -O /tmp/a.bin
+
+#check file and firmware
+file=$(md5sum /tmp/a.bin | grep /tmp/a.bin | awk '{print $1}')
+firmware2=$(cat /proc/mtd | grep firmware2 | awk '{print $1}')
+
+if [ $file == '290ec6de5de8063e7492128a702bcb5b' ]
+then
+echo "Firmware verified. Proceeding ..."
+if [ $firmware2 == 'mtd7:' ]
+then
 echo "Wait for the modem to reboot..."
-mtd -r write /tmp/a.bin /dev/mtd4
-exit
-fi 
-#wget http://github.com/Karpovian05/bin/raw/main/a.bin -O /tmp/firmware.bin
+mtd -r write /tmp/a.bin /dev/mtd4 > /dev/null 2&>1
+
+else
 echo "Wait for the modem to reboot..."
-mtd -r write /tmp/a.bin /dev/mtd5
-exit
+mtd -r write /tmp/a.bin /dev/mtd5 > /dev/null 2&>1
+fi
+
+else
+echo "Firmware not verified. Please contact dev."
+echo "Process cancelled.."
+rm -rf /tmp/a.bin
+fi
