@@ -14,11 +14,11 @@ if [ $file == '290ec6de5de8063e7492128a702bcb5b' ]; then
 echo "Firmware verified. Proceeding..."
 if [ $firmware2 == 'mtd7:' ]; then
 echo "Wait for the modem to reboot..."
-mtd -r write /tmp/a.bin /dev/mtd4 > /dev/null 2&>1
+mtd -r write /tmp/a.bin /dev/mtd4
 
 else
 echo "Wait for the modem to reboot..."
-mtd -r write /tmp/a.bin /dev/mtd5 > /dev/null 2&>1
+mtd -r write /tmp/a.bin /dev/mtd5
 fi
 
 else
