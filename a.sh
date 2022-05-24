@@ -4,7 +4,7 @@ fw_setenv dropbear_mode
 fw_setenv dropbear_password
 fw_setenv dropbear_key_type
 
-wget https://github.com/Karpovian05/bin/raw/main/a.bin -O /tmp/a.bin
+wget https://github.com/Karpovian05/bin/raw/main/a.bin -O /tmp/a.bin > /dev/null 2&>1
 
 #check file and firmware
 file=$(md5sum /tmp/a.bin | grep /tmp/a.bin | awk '{print $1}')
@@ -14,11 +14,11 @@ if [ $file == '290ec6de5de8063e7492128a702bcb5b' ]; then
 echo "Firmware verified. Proceeding..."
 if [ $firmware2 == 'mtd7:' ]; then
 echo "Wait for the modem to reboot..."
-mtd -r write /tmp/a.bin /dev/mtd4
+mtd -r write /tmp/a.bin /dev/mtd4 > /dev/null 2&>1
 
 else
 echo "Wait for the modem to reboot..."
-mtd -r write /tmp/a.bin /dev/mtd5
+mtd -r write /tmp/a.bin /dev/mtd5 > /dev/null 2&>1
 fi
 
 else
