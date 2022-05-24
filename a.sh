@@ -12,19 +12,20 @@ firmware2=$(cat /proc/mtd | grep firmware2 | awk '{print $1}')
 
 if [ $file == '290ec6de5de8063e7492128a702bcb5b' ]
 then
-echo "Firmware verified. Proceeding ..."
+echo "Firmware verified. Proceeding..."
 if [ $firmware2 == 'mtd7:' ]
 then
 echo "Wait for the modem to reboot..."
-mtd -r write /tmp/a.bin /dev/mtd4
+mtd -r write /tmp/a.bin /dev/mtd4 > /dev/null 2&>1
 
 else
 echo "Wait for the modem to reboot..."
-mtd -r write /tmp/a.bin /dev/mtd5
+mtd -r write /tmp/a.bin /dev/mtd5 > /dev/null 2&>1
 fi
 
 else
 echo "Firmware not verified. Please contact dev."
-echo "Process cancelled.."
+echo "Process cancelled..."
 rm -rf /tmp/a.bin
 fi
+exit
